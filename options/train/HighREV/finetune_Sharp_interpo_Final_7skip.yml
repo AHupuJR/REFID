@@ -1,0 +1,157 @@
+# general settings
+name: Finetune_Sharpinterpo_Final_7skip # XXNet_convgru_deblurvoxel #XXNet 
+model_type: TwoSharpImageEventRecurrentRestorationModel
+scale: 1
+num_gpu: 4 # 4
+manual_seed: 10
+
+datasets:
+  train:
+    name: gopro-twoblur-train
+    type: RuisiSharpEventRecurrentDataset
+
+    # dataroot: /cluster/work/cvl/leisun/RuisiDataset/UnnamedDataset_mini
+    # dataroot: ./datasets/UND_11_3
+    dataroot: ./datasets/UND_11_1
+
+    # interpolation settings
+    num_end_interpolation: 1 # m
+    num_inter_interpolation: 7 # n
+    # voxel settings
+    norm_voxel: true
+    one_voxel_flag: true
+    # the one_voxel_flag has to be true if want to set 'return_deblur_voxel' to true
+    return_deblur_voxel: false
+
+    filename_tmpl: '{}'
+    io_backend:
+      type: disk
+
+    # augment
+    gt_size: 256
+    use_hflip: true
+    use_rot: true
+    random_reverse: false
+    # data loader settings
+    use_shuffle: true
+    num_worker_per_gpu: 6
+    batch_size_per_gpu: 1 # 4 for 2080, 8 for titan
+    dataset_enlarge_ratio: 8  # accelarate, equals to the num_gpu
+    prefetch_mode: cpu  # ?
+    num_prefetch_queue: 2
+
+  val:
+    name: gopro-twoblur-test
+    type: RuisiSharpEventRecurrentDataset
+
+    # dataroot: /cluster/work/cvl/leisun/RuisiDataset/UnnamedDataset_mini
+    # dataroot: ./datasets/UND_11_3
+    dataroot: ./datasets/UND_11_1
+
+    # interpolation settings
+    num_end_interpolation: 1 # m
+    num_inter_interpolation: 7 # n
+    # voxel settings
+    norm_voxel: true
+    one_voxel_flag: true
+    # the one_voxel_flag has to be true if want to set 'return_deblur_voxel' to true
+    return_deblur_voxel: false
+
+    io_backend:
+      type: disk
+
+    gt_size: ~
+    use_hflip: false
+    use_rot: false
+
+dataset_name: UND
+
+# network structures
+# network_g:
+#   type: FinalBidirectionAttenfusion # UNetPSDecoderRecurrent #UNetDecoderRecurrent
+#   img_chn: 6 # 6 for two image, 26 for image and voxel
+#   ev_chn: 2
+#   num_encoders: 3
+#   base_num_channels: 32
+#   # recurrent_block_type: 'simpleconvThendown' # 'convlstm' or 'convgru' or 'simpleconv' or 'simpleconvThendown'
+#   num_block: 1  # num_block of resblock in the bottleneck of unet
+#   num_residual_blocks: 2
+#   # use_first_dcn: false
+
+
+# network structures
+network_g:
+  type: FinalBidirectionAttenfusion # UNetDecoderRecurrent # UNetPSDecoderRecurrent #UNetDecoderRecurrent # UNetDecoderRecurrentSiameseImg
+  img_chn: 6 # 6 for two image, 26 for image and voxel
+  ev_chn: 2
+  num_encoders: 3
+  base_num_channels: 32
+  # recurrent_block_type: 'simpleconvThendown' # 'convlstm' or 'convgru' or 'simpleconv' or 'simpleconvThendown'
+  num_block: 1  # num_block of blocks in each encoder
+  num_residual_blocks: 2 # num_block of resblock in the bottleneck of unet
+  # use_first_dcn: false
+
+
+# path
+path:
+  pretrain_network_g:  /cluster/work/cvl/leisun/log_EventInter_Recurrent/experiments/Sharpinterpo_Final_7skip/models/net_g_latest.pth
+  strict_load_g: true
+  resume_state: ~ # /cluster/work/cvl/leisun/log_EventInter_Recurrent/experiments/XXNet_first_try/training_states/120000.state
+  training_states: ~ # save current trainig model states, for resume
+  root: /cluster/work/cvl/leisun/XXNet_inference/  # set this option ONLY in TEST!!!
+
+# training settings
+train:
+  optim_g:
+    type: AdamW
+    lr: !!float 1e-4
+    weight_decay: !!float 1e-4
+    betas: [0.9, 0.99]
+
+  scheduler:
+    type: TrueCosineAnnealingLR
+    T_max: 10000 
+    eta_min: !!float 1e-7
+
+  total_iter: 10000
+  warmup_iter: -1 # no warm up
+
+  # losses
+  pixel_opt:
+    type: CharbonnierLoss
+    loss_weight: 1
+    reduction: mean
+
+# validation settings
+val:
+  val_freq: !!float 1e4 # 2e4
+  save_img: true  
+  save_gt: false
+  grids: ~  
+  crop_size: ~
+  max_minibatch: 8
+
+  metrics_interpo:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: false 
+
+# logging settings
+logger:
+  print_freq: 200
+  save_checkpoint_freq: !!float 25000
+  use_tb_logger: true
+  # wandb:
+  #   project: your_project_name
+  #   resume_id: x
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500
+

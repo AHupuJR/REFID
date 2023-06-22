@@ -1,0 +1,86 @@
+# general settings
+name: InferenceResults_UND_Final_3skip
+model_type: TestTwoImageEventRecurrentRestorationModel
+scale: 1
+num_gpu: 4 # set num_gpu: 0 for cpu mode
+manual_seed: 10
+
+datasets:
+  test:
+    name: UND-twoblur-test
+    type: RuisiEventRecurrentDataset
+
+    # dataroot: /cluster/work/cvl/leisun/RuisiDataset/UnnamedDataset_mini
+    dataroot: ./datasets/UND_11_3
+    # dataroot: ./datasets/UND_11_1
+
+    # interpolation settings
+    num_end_interpolation: 11 # m
+    num_inter_interpolation: 3 # n
+    # voxel settings
+    norm_voxel: true
+    one_voxel_flag: true
+    # the one_voxel_flag has to be true if want to set 'return_deblur_voxel' to true
+    return_deblur_voxel: true 
+
+    io_backend:
+      type: disk
+
+    gt_size: ~ # whole image inference
+    use_hflip: false
+    use_rot: false
+
+dataset_name: UND
+
+# network structures
+network_g:
+  type: FinalBidirectionAttenfusion # UNetDecoderRecurrent # UNetPSDecoderRecurrent #UNetDecoderRecurrent # UNetDecoderRecurrentSiameseImg
+  img_chn: 26 # 6 for two image, 26 for image and voxel
+  ev_chn: 2
+  num_encoders: 3
+  base_num_channels: 32
+  # recurrent_block_type: 'simpleconvThendown' # 'convlstm' or 'convgru' or 'simpleconv' or 'simpleconvThendown'
+  num_block: 1  # num_block of blocks in each encoder
+  num_residual_blocks: 2 # num_block of resblock in the bottleneck of unet
+  # use_first_dcn: false
+
+
+# path
+path:
+  pretrain_network_g: /cluster/work/cvl/leisun/XXNet_inference/experiments/Finetune_1w_UND_Final_3skip/models/net_g_10000.pth
+  strict_load_g: true
+  resume_state: ~ # /cluster/work/cvl/leisun/log_EventInter_Recurrent/experiments/Decoder_recurrent_XXNet_convthendown_simpleconv_1_deblurvoxel_3skip/training_states/175000.state # /cluster/work/cvl/leisun/log_EventInter_Recurrent/experiments/XXNet_first_try/training_states/120000.state
+  root: /cluster/work/cvl/leisun/XXNet_inference/  # set this option ONLY in TEST!!!
+
+# validation settings
+val:
+  save_img: true
+  save_gt: true
+  grids: ~
+  crop_size: ~
+  rgb2bgr: false # to my h5 data, its false
+
+  metrics_deblur:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: false   
+  
+  metrics_interpo:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: false 
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500

@@ -1,2 +1,180 @@
-# REFID
-Official repository for CVPR 2023 paper "Event-Based Frame Interpolation with Ad-hoc Deblurring"
+Event-based Frame Interpolation with Ad-hoc Deblurring
+---
+#### [Lei Sun](https://ahupujr.github.io/), [Christos Sakaridis](https://people.ee.ethz.ch/~csakarid/), [Jingyun Liang](https://jingyunliang.github.io/), Peng Sun, Jiezhang Cao, Kai Zhang, Qi Jiang, Kaiwei Wang, Luc Van Gool
+#### [Paper](https://openaccess.thecvf.com/content/CVPR2023/papers/Sun_Event-Based_Frame_Interpolation_With_Ad-Hoc_Deblurring_CVPR_2023_paper.pdf)
+#### [CVPR virtual poster](https://cvpr2023.thecvf.com/virtual/2023/poster/22871)
+> The performance of video frame interpolation is inherently correlated with the ability to handle motion in the input scene. Even though previous works recognize the utility of asynchronous event information for this task, they ignore the fact that motion may or may not result in blur in the input video to be interpolated, depending on the length of the exposure time of the frames and the speed of the motion, and assume either that the input video is sharp, restricting themselves to frame interpolation, or that it is blurry, including an explicit, separate deblurring stage before interpolation in their pipeline. We instead propose a general method for event-based frame interpolation that performs deblurring ad-hoc and thus works both on sharp and blurry input videos. Our model consists in a bidirectional recurrent network that naturally incorporates the temporal dimension of interpolation and fuses information from the input frames and the events adaptively based on their temporal proximity. In addition, we introduce a novel real-world high-resolution dataset with events and color videos named HighREV, which provides a challenging evaluation setting for the examined task. Extensive experiments on the standard GoPro benchmark and on our dataset show that our network consistently outperforms previous state-of-the-art methods on frame interpolation, single image deblurring and the joint task of interpolation and deblurring.
+
+
+## News
+- June 2023: The codes and dataset are publicly available.
+- March 2023: The paper is accepted by CVPR 2023
+
+
+## Goal
+<div style="text-align: center">
+<img src="figures/brief.png" alt="brief" style="zoom:100%;" div align=center/>
+</div>
+
+Unified framework for both event-based sharp and blurry frame interpolation.
+
+Sharp frame interpolation:
+- Short exposure time
+- Sharp reference frames
+
+Blurry frame interpolation:
+- Long exposure time
+- Blurry reference frames
+
+
+
+## Model Architecture
+<div style="text-align: center">
+<img src="figures/model_arch.png" alt="arch" style="zoom:100%;" div align=center/>
+</div>
+
+
+### Bi-directional event recurrent block
+<div style="text-align: center">
+<img src="figures/evr.png" alt="evr" style="zoom:100%;" div align=center/>
+</div>
+
+### Event-guided adaptive channel attention
+<div style="text-align: center">
+<img src="figures/egaca.png" alt="egaca" style="zoom:100%;" />
+</div>
+
+## Results
+<details><summary>Blurry frame interpolation (Click to expand) </summary>
+<img src="figures/qualitative_blurry_interpo.png" alt="blurry_interpo" style="zoom:100%;" />
+<img src="figures/table_blurry_interpo.png" alt="blurry_interpo" style="zoom:100%;" />
+</details>
+
+<details><summary>Sharp frame interpolation (Click to expand) </summary>
+<img src="figures/qualitative_sharp_interpo.png" alt="sharp_interpo" style="zoom:100%;" />
+<img src="figures/table_sharp_interpo.png" alt="sharp_interpo" style="zoom:100%;" />
+</details>
+
+## Installation
+This implementation based on [BasicSR](https://github.com/xinntao/BasicSR) which is a open source toolbox for image/video restoration tasks. 
+
+```python
+python 3.8.5
+pytorch 1.7.1
+cuda 11.0
+```
+
+
+
+```
+git clone https://github.com/AHupuJR/REFID
+cd REFID
+pip install -r requirements.txt
+python setup.py develop --no_cuda_ext
+```
+
+## <span id="dataset_section"> HighREV dataset </span> 
+
+<div style="text-align: center">
+<img src="figures/dataset.png" alt="arch" style="zoom:100%;" div align=center/>
+</div>
+
+HighREV dataset is a event camera dataset with high spatial resolution. It can be used for event-based image deblurring, event-based frame interpolation, event-based blurry frame interpolation and other event-based low-level image tasks.
+
+HighREV dataset includes:
+- Blurry images (png)
+- Sharp image (png)
+- Event stream (npy)
+
+The blurry images are synthesized from 11 sharp images, and we use [RIFE][rife_codes] to upsample the framerate of the original frames by 4 times. Thus each blurry image is synthesized from 44 sharp images.
+
+We skip every 1/3 sharp images between each blurry image for frame interpolation task evaluation.
+
+Because we used the sensor from [Alpsentek][alpsentek_link] for both APS frame collection and events, the price for high spatially resolution is the temporal resolution of event camera is lower than common event camera. The temporal resolution of events in HighREV is 2 ms.
+
+
+### Dataset download
+
+[HighREV_11_1][dataset_eth_link_11_1]
+
+[HighREV_11_3][dataset_eth_link_11_3]
+
+
+### Dataset structure
+
+The directory structure of HighREV is as follows:
+
+Images:
+```
+{root}/{split}/{sequence}/{class}/{image_name}.npg}`
+```
+
+Events:
+```
+{root}/{split}/{sequence}/{event_name}.npz}`
+```
+
+The meaning of the individual directory levels is:
+ - `root`      the root directory where the dataset is stored.
+ - `split`     the split, e.g. `train`, `test`, `train_event`, or `test_event`.
+ - `sequence`  the sequence name.
+ - `class`     the class of the image, `blur` or `gt`.
+ - `image_name` the name of the imaage. 
+
+The single event npz file contains the raw events (x,y,p,t) in the time range of the starting of the exposure time of current frame to the starting of the exposure time of next frame.
+
+
+
+## Train
+---
+### GoPro
+
+* train
+
+  * ```python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 basicsr/train.py -opt options/train/GoPro/REFID.yml --launcher pytorch```
+
+* eval
+  * Download [pretrained model](link) to ./experiments/pretrained_models/REFID-GoPro.pth
+  * ```python basicsr/test.py -opt options/test/GoPro/REFID.yml  ```
+  
+
+### HighREV
+
+* train
+
+  * ```python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 basicsr/train.py -opt options/train/HighREV/REFID.yml --launcher pytorch```
+
+* eval
+  * Download [pretrained model](link) to ./experiments/pretrained_models/REFID-REBlur.pth
+  * ```python basicsr/test.py -opt options/test/HighREV/REFID.yml ```
+  
+
+## Citations
+
+```
+@article{sun2023event,
+  title={Event-Based Frame Interpolation with Ad-hoc Deblurring},
+  author={Sun, Lei and Sakaridis, Christos and Liang, Jingyun and Sun, Peng and Cao, Jiezhang and Zhang, Kai and Jiang, Qi and Wang, Kaiwei and Van Gool, Luc},
+  journal={arXiv preprint arXiv:2301.05191},
+  year={2023}
+}
+```
+
+
+## Contact
+Should you have any questions, please feel free to contact leosun0331@gmail.com or leo_sun@zju.edu.cn
+
+
+## License and Acknowledgement
+
+This project is under the Apache 2.0 license, and it is based on [BasicSR](https://github.com/xinntao/BasicSR) which is under the Apache 2.0 license.
+
+
+[rife_codes]: <https://github.com/megvii-research/ECCV2022-RIFE>
+[dataset_eth_link_readme]: <https://data.vision.ee.ethz.ch/leisun/shared/HighREV_README.md>
+[dataset_eth_link_11_1]: <https://data.vision.ee.ethz.ch/leisun/shared/UND_11_1.tar.gz>
+[dataset_eth_link_11_3]: <https://data.vision.ee.ethz.ch/leisun/shared/UND_11_3.tar.gz>
+[alpsentek_link]: <https://www.alpsentek.com/>
+[github_website]: <https://github.com/AHupuJR/REFID>
+[HighREV_pretrained_weights]: <TODO>
+[GoPro_pretrained_weights]: <TODO>
