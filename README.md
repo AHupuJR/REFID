@@ -134,7 +134,7 @@ The single event npz file contains the raw events (x,y,p,t) in the time range of
   * ```python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 basicsr/train.py -opt options/train/GoPro/REFID.yml --launcher pytorch```
 
 * eval
-  * Download [pretrained model](link) to ./experiments/pretrained_models/REFID-GoPro.pth
+  * Download [pretrained model](https://github.com/AHupuJR/REFID/releases/tag/v0.0) to ./experiments/pretrained_models/
   * ```python basicsr/test.py -opt options/test/GoPro/REFID.yml  ```
   
 
@@ -145,7 +145,7 @@ The single event npz file contains the raw events (x,y,p,t) in the time range of
   * ```python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 basicsr/train.py -opt options/train/HighREV/REFID.yml --launcher pytorch```
 
 * eval
-  * Download [pretrained model](link) to ./experiments/pretrained_models/REFID-REBlur.pth
+  * Download [pretrained model](https://github.com/AHupuJR/REFID/releases/tag/v0.0) to ./experiments/pretrained_models/REFID-REBlur.pth
   * ```python basicsr/test.py -opt options/test/HighREV/REFID.yml ```
   
 
