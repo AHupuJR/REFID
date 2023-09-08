@@ -90,39 +90,9 @@ The blurry images are synthesized from 11 sharp images, and we use [RIFE][rife_c
 
 We skip every 1/3 sharp images between each blurry image for frame interpolation task evaluation.
 
-Because we used the sensor from [Alpsentek][alpsentek_link] for both APS frame collection and events, the price for high spatially resolution is the temporal resolution of event camera is lower than common event camera. The temporal resolution of events in HighREV is 2 ms.
+### Dataset Download
 
-
-### Dataset download
-
-[HighREV_11_1][dataset_eth_link_11_1]
-
-[HighREV_11_3][dataset_eth_link_11_3]
-
-
-### Dataset structure
-
-The directory structure of HighREV is as follows:
-
-Images:
-```
-{root}/{split}/{sequence}/{class}/{image_name}.npg}`
-```
-
-Events:
-```
-{root}/{split}/{sequence}/{event_name}.npz}`
-```
-
-The meaning of the individual directory levels is:
- - `root`      the root directory where the dataset is stored.
- - `split`     the split, e.g. `train`, `test`, `train_event`, or `test_event`.
- - `sequence`  the sequence name.
- - `class`     the class of the image, `blur` or `gt`.
- - `image_name` the name of the imaage. 
-
-The single event npz file contains the raw events (x,y,p,t) in the time range of the starting of the exposure time of current frame to the starting of the exposure time of next frame.
-
+Because of the commercial reason, dataset download is allowed only with the authority of [Alpsentek][alpsentek_link]. Please contacting me or Alpsentek to get the authority if needed.
 
 
 ## Train
@@ -171,10 +141,5 @@ This project is under the Apache 2.0 license, and it is based on [BasicSR](https
 
 
 [rife_codes]: <https://github.com/megvii-research/ECCV2022-RIFE>
-[dataset_eth_link_readme]: <https://data.vision.ee.ethz.ch/leisun/shared/HighREV_README.md>
-[dataset_eth_link_11_1]: <https://data.vision.ee.ethz.ch/leisun/shared/UND_11_1.tar.gz>
-[dataset_eth_link_11_3]: <https://data.vision.ee.ethz.ch/leisun/shared/UND_11_3.tar.gz>
 [alpsentek_link]: <https://www.alpsentek.com/>
 [github_website]: <https://github.com/AHupuJR/REFID>
-[HighREV_pretrained_weights]: <TODO>
-[GoPro_pretrained_weights]: <TODO>
