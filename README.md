@@ -92,7 +92,7 @@ We skip every 1/3 sharp images between each blurry image for frame interpolation
 
 ### Dataset Download
 
-Because of the commercial reason, dataset download is allowed only with the authority of [Alpsentek][alpsentek_link]. Please contacting me or Alpsentek to get the authority if needed.
+Because of the commercial reason, dataset download is allowed only with the authority of [Alpsentek][alpsentek_link]. Please contacting me or Alpsentek to get the authority from Alpsentek if needed.
 
 
 ## Train
