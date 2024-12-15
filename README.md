@@ -94,6 +94,23 @@ We skip every 1/3 sharp images between each blurry image for frame interpolation
 
 Because of the commercial reason, dataset download is allowed only with the authority of [Alpsentek][alpsentek_link]. Please contacting me or Alpsentek to get the authority from Alpsentek if needed.
 
+## Weights
+---
+### GoPro
+Blur VFI: [11+1](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-GoPro-11-1.pth); [11+3](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-GoPro-11-3.pth)
+
+Sharp VFI: [7 skip](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-GoPro-7skip.pth); [15 skip](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-GoPro-15skip.pth)
+
+[Single image deblur](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-GoPro-single-deblur.pth)
+
+### HighREV
+Blur VFI: [11+1](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-HighREV-1skip.pth); [11+3](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-HighREV-3skip.pth)
+
+Sharp VFI: [7 skip](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-HighREV-7skip.pth); [15 skip](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-HighREV-15skip.pth)
+
+[Single image deblur](https://github.com/AHupuJR/REFID/releases/download/v0.1/REFID-HighREV-single-deblur.pth)
+
+
 
 ## Train
 ---
@@ -104,7 +121,7 @@ Because of the commercial reason, dataset download is allowed only with the auth
   * ```python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 basicsr/train.py -opt options/train/GoPro/REFID.yml --launcher pytorch```
 
 * eval
-  * Download [pretrained model](https://github.com/AHupuJR/REFID/releases/tag/v0.0) to ./experiments/pretrained_models/
+  * Download [pretrained model](https://github.com/AHupuJR/REFID/releases) to ./experiments/pretrained_models/
   * ```python basicsr/test.py -opt options/test/GoPro/REFID.yml  ```
   
 
@@ -115,7 +132,7 @@ Because of the commercial reason, dataset download is allowed only with the auth
   * ```python -m torch.distributed.launch --nproc_per_node=4 --master_port=4321 basicsr/train.py -opt options/train/HighREV/REFID.yml --launcher pytorch```
 
 * eval
-  * Download [pretrained model](https://github.com/AHupuJR/REFID/releases/tag/v0.0) to ./experiments/pretrained_models/REFID-REBlur.pth
+  * Download [pretrained model](https://github.com/AHupuJR/REFID/releases) to ./experiments/pretrained_models/REFID-REBlur.pth
   * ```python basicsr/test.py -opt options/test/HighREV/REFID.yml ```
   
 
