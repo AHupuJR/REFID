@@ -1,19 +1,29 @@
-Event-based Frame Interpolation with Ad-hoc Deblurring
----
+# Event-based Frame Interpolation with Ad-hoc Deblurring
+
 #### [Lei Sun](https://ahupujr.github.io/), [Christos Sakaridis](https://people.ee.ethz.ch/~csakarid/), [Jingyun Liang](https://jingyunliang.github.io/), Peng Sun, Jiezhang Cao, Kai Zhang, Qi Jiang, Kaiwei Wang, Luc Van Gool
 #### [Paper](https://openaccess.thecvf.com/content/CVPR2023/papers/Sun_Event-Based_Frame_Interpolation_With_Ad-Hoc_Deblurring_CVPR_2023_paper.pdf)
 #### [CVPR virtual poster](https://cvpr2023.thecvf.com/virtual/2023/poster/22871)
-> The performance of video frame interpolation is inherently correlated with the ability to handle motion in the input scene. Even though previous works recognize the utility of asynchronous event information for this task, they ignore the fact that motion may or may not result in blur in the input video to be interpolated, depending on the length of the exposure time of the frames and the speed of the motion, and assume either that the input video is sharp, restricting themselves to frame interpolation, or that it is blurry, including an explicit, separate deblurring stage before interpolation in their pipeline. We instead propose a general method for event-based frame interpolation that performs deblurring ad-hoc and thus works both on sharp and blurry input videos. Our model consists in a bidirectional recurrent network that naturally incorporates the temporal dimension of interpolation and fuses information from the input frames and the events adaptively based on their temporal proximity. In addition, we introduce a novel real-world high-resolution dataset with events and color videos named HighREV, which provides a challenging evaluation setting for the examined task. Extensive experiments on the standard GoPro benchmark and on our dataset show that our network consistently outperforms previous state-of-the-art methods on frame interpolation, single image deblurring and the joint task of interpolation and deblurring.
+
+# A Unified Framework for Event-based Frame Interpolation with Ad-hoc Deblurring in the Wild
+
+#### [Lei Sun](https://ahupujr.github.io/), [Daniel Gehrig](), [Christos Sakaridis](https://people.ee.ethz.ch/~csakarid/), Mathias Gehrig,[Jingyun Liang](https://jingyunliang.github.io/), Peng Sun, Zhijie Xu, Kaiwei Wang, [Luc Van Gool](https://insait.ai/prof-luc-van-gool/), and [Davide Scaramuzza](https://rpg.ifi.uzh.ch/people_scaramuzza.html)
+
+Work done in Robotics and Perception Group, UZH.
+#### [Paper](TODO)
+
+
 
 
 ## News
+- Feb 2025: Our dataset for journal version is available.
+- Feb 2025: The journal version: A Unified Framework for Event-based Frame Interpolation with Ad-hoc Deblurring in the Wild is accepted by T-PAMI!
 - June 2023: The codes and dataset are publicly available.
 - March 2023: The paper is accepted by CVPR 2023
 
 
 ## Goal
 <div style="text-align: center">
-<img src="figures/brief.png" alt="brief" style="zoom:100%;" div align=center/>
+<img src="figures/Fig1.png" alt="brief" style="zoom:100%;" div align=center/>
 </div>
 
 Unified framework for both event-based sharp and blurry frame interpolation.
