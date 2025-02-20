@@ -1,3 +1,13 @@
+
+## News
+- Feb 2025: We are organizing the First Challenge on Event-Base Image Deblurring. [Dataset for the challenge](https://github.com/AHupuJR/NTIRE2025_EventDeblur_challenge?tab=readme-ov-file).
+- Feb 2025: Our dataset for journal version is available.
+- Feb 2025: The journal version: A Unified Framework for Event-based Frame Interpolation with Ad-hoc Deblurring in the Wild is accepted by T-PAMI!
+- June 2023: The codes and dataset are publicly available.
+- March 2023: The paper is accepted by CVPR 2023
+
+
+
 # Event-based Frame Interpolation with Ad-hoc Deblurring
 
 #### [Lei Sun](https://ahupujr.github.io/), [Christos Sakaridis](https://people.ee.ethz.ch/~csakarid/), [Jingyun Liang](https://jingyunliang.github.io/), Peng Sun, Jiezhang Cao, Kai Zhang, Qi Jiang, Kaiwei Wang, Luc Van Gool
@@ -12,13 +22,6 @@ Work done in Robotics and Perception Group, UZH.
 #### [Paper](TODO)
 
 
-
-
-## News
-- Feb 2025: Our dataset for journal version is available.
-- Feb 2025: The journal version: A Unified Framework for Event-based Frame Interpolation with Ad-hoc Deblurring in the Wild is accepted by T-PAMI!
-- June 2023: The codes and dataset are publicly available.
-- March 2023: The paper is accepted by CVPR 2023
 
 
 ## Goal
