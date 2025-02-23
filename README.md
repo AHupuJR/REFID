@@ -1,6 +1,6 @@
 
 ## News
-- Feb 2025: We are organizing the First Challenge on Event-Base Image Deblurring. [Dataset for the challenge](https://github.com/AHupuJR/NTIRE2025_EventDeblur_challenge?tab=readme-ov-file).
+- Feb 2025: We are organizing the [First Challenge on Event-Base Image Deblurring](https://github.com/AHupuJR/NTIRE2025_EventDeblur_challenge?tab=readme-ov-file). [Dataset for the challenge (HighREV_singleimage)](https://codalab.lisn.upsaclay.fr/my/datasets/download/9f275580-9b38-4984-b995-1e59e96b6111).
 - Feb 2025: Our dataset for journal version is available.
 - Feb 2025: The journal version: A Unified Framework for Event-based Frame Interpolation with Ad-hoc Deblurring in the Wild is accepted by T-PAMI!
 - June 2023: The codes and dataset are publicly available.
@@ -105,7 +105,11 @@ We skip every 1/3 sharp images between each blurry image for frame interpolation
 
 ### Dataset Download
 
-Because of the commercial reason, dataset download is allowed only with the authority of [Alpsentek][alpsentek_link]. Please contacting me or Alpsentek to get the authority from Alpsentek if needed.
+- [HighREV for video deblurring and interpolation](https://www.kaggle.com/datasets/lei0331/highrev-full) 
+
+- [Dataset for the challenge (HighREV_singleimage)](https://codalab.lisn.upsaclay.fr/my/datasets/download/9f275580-9b38-4984-b995-1e59e96b6111) (Used in Event-based image deblurring challenge)
+
+- [Codes to convert events to voxel](https://github.com/AHupuJR/NTIRE2025_EventDeblur_challenge?tab=readme-ov-file#voxel-grids)
 
 ## Weights
 ---
